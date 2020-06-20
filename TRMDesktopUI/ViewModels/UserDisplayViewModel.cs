@@ -1,10 +1,7 @@
 ﻿using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using TRMDesktopUI.Library.Api;
@@ -22,7 +19,7 @@ namespace TRMDesktopUI.ViewModels
 
         public BindingList<UserModel> Users
         {
-            get { return _users; }
+            get => _users;
             set
             {
                 _users = value;

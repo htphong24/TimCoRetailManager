@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace TRMDesktopUI.Models
 {
@@ -14,7 +9,7 @@ namespace TRMDesktopUI.Models
 
         public int QuantityInCart
         {
-            get { return _quantityInCart; }
+            get => _quantityInCart;
             set
             {
                 _quantityInCart = value;
@@ -22,20 +17,14 @@ namespace TRMDesktopUI.Models
                 CallPropertyChanged(nameof(DisplayText));
             }
         }
-        
-        public string DisplayText
-        {
-            get
-            {
-                return $"{ Product.ProductName } ({ QuantityInCart })";
-            }
-        }
+
+        public string DisplayText => $"{ Product.ProductName } ({ QuantityInCart })";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void CallPropertyChanged(string propertName)
+        public void CallPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

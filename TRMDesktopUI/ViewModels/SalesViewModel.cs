@@ -72,24 +72,11 @@ namespace TRMDesktopUI.ViewModels
             Products = new BindingList<ProductDisplayModel>(products);
         }
 
-        public string SubTotal
-        {
-            get
-            {
-                return CalculateSubTotal().ToString("C");
-            }
-        }
+        public string SubTotal => CalculateSubTotal().ToString("C");
 
         private decimal CalculateSubTotal()
         {
-            decimal subTotal = 0;
-
-            foreach (var item in Cart)
-            {
-                subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-            }
-
-            return subTotal;
+            return Cart.Sum(item => (item.Product.RetailPrice * item.QuantityInCart));
         }
 
         private decimal CalculateTax()
@@ -112,13 +99,7 @@ namespace TRMDesktopUI.ViewModels
             return taxAmount;
         }
 
-        public string Tax
-        {
-            get
-            {
-                return CalculateTax().ToString("C");
-            }
-        }
+        public string Tax => CalculateTax().ToString("C");
 
         public string Total
         {
@@ -133,7 +114,7 @@ namespace TRMDesktopUI.ViewModels
 
         public ProductDisplayModel SelectedProduct
         {
-            get { return _selectedProduct; }
+            get => _selectedProduct;
             set
             {
                 _selectedProduct = value;
@@ -158,7 +139,7 @@ namespace TRMDesktopUI.ViewModels
 
         public CartItemDisplayModel SelectedCartItem
         {
-            get { return _selectedCartItem; }
+            get => _selectedCartItem;
             set
             {
                 _selectedCartItem = value;
@@ -171,7 +152,7 @@ namespace TRMDesktopUI.ViewModels
 
         public BindingList<CartItemDisplayModel> Cart
         {
-            get { return _cart; }
+            get => _cart;
             set
             {
                 _cart = value;
@@ -181,7 +162,7 @@ namespace TRMDesktopUI.ViewModels
 
         public int ItemQuantity
         {
-            get { return _itemQuantity; }
+            get => _itemQuantity;
             set
             {
                 _itemQuantity = value;
@@ -192,7 +173,7 @@ namespace TRMDesktopUI.ViewModels
 
         public BindingList<ProductDisplayModel> Products
         {
-            get { return _products; }
+            get => _products;
             set
             {
                 _products = value;
@@ -204,12 +185,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                bool output = false;
-
-                if (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
-                {
-                    output = true;
-                }
+                bool output = ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity;
 
                 return output;
             }
@@ -245,12 +221,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                bool output = false;
-
-                if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
-                {
-                    output = true;
-                }
+                bool output = SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0;
 
                 return output;
             }
@@ -280,12 +251,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                bool output = false;
-
-                if (Cart.Count > 0)
-                {
-                    output = true;
-                }
+                bool output = Cart.Count > 0;
 
                 return output;
             }

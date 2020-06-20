@@ -12,7 +12,6 @@ namespace TRMDesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
-        private HttpClient _apiClient;
         private ILoggedInUserModel _loggedInUserModel;
 
         public APIHelper(ILoggedInUserModel loggedInUserModel)
@@ -21,22 +20,15 @@ namespace TRMDesktopUI.Library.Api
             _loggedInUserModel = loggedInUserModel;
         }
 
-        public HttpClient ApiClient
-        {
-            get
-            {
-                return _apiClient;
-            }
-        }
+        public HttpClient ApiClient { get; private set; }
 
         private void InitializeClient()
         {
             string api = ConfigurationManager.AppSettings["api"];
 
-            _apiClient = new HttpClient();
-            _apiClient.BaseAddress = new Uri(api);
-            _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ApiClient = new HttpClient {BaseAddress = new Uri(api)};
+            ApiClient.DefaultRequestHeaders.Accept.Clear();
+            ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
@@ -48,7 +40,7 @@ namespace TRMDesktopUI.Library.Api
                 new KeyValuePair<string, string>("password", password)
             });
 
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/Token", data))
+            using (HttpResponseMessage response = await ApiClient.PostAsync("/Token", data))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,26 +48,24 @@ namespace TRMDesktopUI.Library.Api
                     AuthenticatedUser authenticatedUser = JsonConvert.DeserializeObject<AuthenticatedUser>(result);
                     return authenticatedUser;
                 }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+
+                throw new Exception(response.ReasonPhrase);
             }
         }
 
         public void LogOffUser()
         {
-            _apiClient.DefaultRequestHeaders.Clear();
+            ApiClient.DefaultRequestHeaders.Clear();
         }
 
         public async Task GetLoggedInUserInfo(string token)
         {
-            _apiClient.DefaultRequestHeaders.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
+            ApiClient.DefaultRequestHeaders.Clear();
+            ApiClient.DefaultRequestHeaders.Accept.Clear();
+            ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ApiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
 
-            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/User"))
+            using (HttpResponseMessage response = await ApiClient.GetAsync("/api/User"))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -22,7 +22,7 @@ namespace TRMDesktopUI.ViewModels
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
@@ -35,12 +35,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                bool output = false;
-
-                if (ErrorMessage?.Length > 0)
-                {
-                    output = true;
-                }
+                var output = ErrorMessage?.Length > 0;
 
                 return output;
             }
@@ -48,7 +43,7 @@ namespace TRMDesktopUI.ViewModels
 
         public string Password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 _password = value;
@@ -59,7 +54,7 @@ namespace TRMDesktopUI.ViewModels
 
         public string UserName
         {
-            get { return _userName; }
+            get => _userName;
             set
             {
                 _userName = value;
@@ -72,12 +67,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                bool output = false;
-
-                if (UserName?.Length > 0 && Password?.Length > 0)
-                {
-                    output = true;
-                }
+                bool output = UserName?.Length > 0 && Password?.Length > 0;
 
                 return output;
             }
@@ -93,7 +83,7 @@ namespace TRMDesktopUI.ViewModels
                 // TODO Capture more info on User
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
-                _events.PublishOnUIThread(new LogOnEvent());
+                await _events.PublishOnUIThreadAsync(new LogOnEvent());
             }
             catch (Exception ex)
             {

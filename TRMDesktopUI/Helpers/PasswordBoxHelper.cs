@@ -14,8 +14,7 @@ namespace TRMDesktopUI.Helpers
 
         public static string GetBoundPassword(DependencyObject d)
         {
-            var box = d as PasswordBox;
-            if (box != null)
+            if (d is PasswordBox box)
             {
                 // this funny little dance here ensures that we've hooked the
                 // PasswordChanged event once, and only once.
@@ -53,7 +52,7 @@ namespace TRMDesktopUI.Helpers
             SetBoundPassword(password, password.Password);
 
             // set cursor past the last character in the password box
-            password.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(password, new object[] { password.Password.Length, 0 });
+            password.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(password, new object[] { password.Password.Length, 0 });
         }
 
     }

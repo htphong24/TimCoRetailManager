@@ -54,7 +54,7 @@ namespace TRMDataManager.Controllers
 
                     foreach (var r in user.Roles)
                     {
-                        u.Roles.Add(r.RoleId, roles.Where(x => x.Id == r.RoleId).First().Name);
+                        u.Roles.Add(r.RoleId, roles.First(x => x.Id == r.RoleId).Name);
                     }
 
                     output.Add(u);

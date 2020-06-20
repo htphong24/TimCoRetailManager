@@ -6,11 +6,11 @@ namespace TRMDataManager.Library.DataAccess
 {
     public class UserData
     {
-        public List<UserModel> GetUserById(string Id)
+        public List<UserModel> GetUserById(string id)
         {
             SqlDataAccess sql = new SqlDataAccess();
 
-            var p = new { Id = Id };
+            var p = new { Id = id };
 
             var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookup", p, "TRMData");
 
